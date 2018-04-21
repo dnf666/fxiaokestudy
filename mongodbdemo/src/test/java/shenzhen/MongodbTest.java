@@ -83,23 +83,23 @@ public class MongodbTest {
         Datastore datastore = morphia.createDatastore(new MongoClient("10.22.0.30", 27017), "a");
         //对数据库进行操作
         DB db = datastore.getDB();
-        addDocument(datastore);
-//        findDocument(datastore);
-//        updateDocument(datastore);
-//        deleteDocument(datastore);
+       // addDocument(datastore);
+   //    findDocument(datastore);
+     updateDocument(datastore);
+      deleteDocument(datastore);
         //删库
-//        db.dropDatabase();
+        db.dropDatabase();
         //查看collection是否存在
        boolean b = db.collectionExists("employees");
         System.out.println(b);
     }
 
     /**
-     * 删除工资大于100000的行
+     * 删除工资大于90000的行
      * @param datastore 数据库连接
      */
     private void deleteDocument(Datastore datastore) {
-        final Query<Employee> overPaidQuery = datastore.createQuery(Employee.class).filter("salary >", 100000);
+        final Query<Employee> overPaidQuery = datastore.createQuery(Employee.class).filter("salary >", 90000);
         datastore.delete(overPaidQuery);
     }
 
@@ -130,7 +130,7 @@ public class MongodbTest {
                 .field("salary").lessThanOrEq(30000)
                 .asList();
         System.out.println(underpaid);
-        //第二种
+        //第二种 我喜欢第二种
         underpaid = datastore.createQuery(Employee.class)
                 .filter("salary <=", 30000)
                 .asList();
@@ -143,7 +143,7 @@ public class MongodbTest {
      */
     private void addDocument(Datastore datastore) {
         //添加document
-        final Employee user = new Employee("zhansan", 10000.0);
+        final Employee user = new Employee("zhansan", 10000000.0);
         datastore.save(user);
     }
 }
