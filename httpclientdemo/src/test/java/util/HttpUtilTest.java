@@ -33,6 +33,7 @@ public class HttpUtilTest {
     public void testGet() throws IOException {
         //创建client
         CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpClients.createMinimal();
         //Name
         List<NameValuePair> list = new ArrayList<>();
         list.add(new BasicNameValuePair("name","dai"));

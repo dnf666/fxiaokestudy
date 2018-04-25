@@ -27,7 +27,7 @@ public class Employee {
     @Reference
     private Employee manager;
     @Reference
-    private List<Employee> directReports = new ArrayList<Employee>();
+    private List<Employee> directReports = new ArrayList<>();
     @Property("wage")//key的名字
     private Double salary;
 

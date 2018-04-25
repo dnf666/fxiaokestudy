@@ -1,15 +1,12 @@
 package shenzhen;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.CreateCollectionOptions;
 import org.bson.Document;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mongodb.morphia.Datastore;
@@ -17,12 +14,12 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.mongodb.morphia.query.UpdateResults;
-import org.springframework.context.ApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import shenzhen.model.Employee;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +29,18 @@ import java.util.List;
 @ContextConfiguration("classpath:springconfig.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MongodbTest {
-    private static MongoClient mongoClient = new MongoClient("localhost", 27333);
-    static Morphia morphia = new Morphia();
-
+        private static Logger logger = LoggerFactory.getLogger(MongodbTest.class);
     /**
      * 列举全部数据库名
      */
+    @Test
+    public void testSlf4j(){
+        logger.debug("lalalala");
+        logger.warn("lalala");
+        logger.info("lalala");
+    }
+    private static MongoClient mongoClient = new MongoClient("10.22.0.30", 27017);
+    static Morphia morphia = new Morphia();
     @Test
     public void listDatabaseNames() {
         MongoIterable<String> iterable = mongoClient.listDatabaseNames();
@@ -83,12 +86,12 @@ public class MongodbTest {
         Datastore datastore = morphia.createDatastore(new MongoClient("10.22.0.30", 27017), "a");
         //对数据库进行操作
         DB db = datastore.getDB();
-       // addDocument(datastore);
-   //    findDocument(datastore);
-     updateDocument(datastore);
-      deleteDocument(datastore);
+   //     addDocument(datastore);
+     findDocument(datastore);
+//     updateDocument(datastore);
+//      deleteDocument(datastore);
         //删库
-        db.dropDatabase();
+//        db.dropDatabase();
         //查看collection是否存在
        boolean b = db.collectionExists("employees");
         System.out.println(b);
@@ -130,9 +133,10 @@ public class MongodbTest {
                 .field("salary").lessThanOrEq(30000)
                 .asList();
         System.out.println(underpaid);
+        System.out.println(datastore.createQuery(Employee.class).countAll());
         //第二种 我喜欢第二种
         underpaid = datastore.createQuery(Employee.class)
-                .filter("salary <=", 30000)
+                .filter("name =", null)
                 .asList();
         System.out.println(underpaid);
     }
