@@ -18,8 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import shenzhen.model.BigDecimalConverter;
 import shenzhen.model.Employee;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,11 +85,11 @@ public class MongodbTest {
         //配置映射包位置
         morphia.mapPackage("shenzhen.model");
         //创建数据库连接
-        Datastore datastore = morphia.createDatastore(new MongoClient("10.22.0.30", 27017), "a");
+        Datastore datastore = morphia.createDatastore(new MongoClient("10.22.0.30", 27017), "b");
         //对数据库进行操作
         DB db = datastore.getDB();
-   //     addDocument(datastore);
-     findDocument(datastore);
+       // addDocument(datastore);
+    findDocument(datastore);
 //     updateDocument(datastore);
 //      deleteDocument(datastore);
         //删库
@@ -129,16 +131,18 @@ public class MongodbTest {
      */
     private void findDocument(Datastore datastore) {
         //查询的两种形式 第一种
-        List<Employee> underpaid = datastore.createQuery(Employee.class)
-                .field("salary").lessThanOrEq(30000)
-                .asList();
-        System.out.println(underpaid);
-        System.out.println(datastore.createQuery(Employee.class).countAll());
-        //第二种 我喜欢第二种
-        underpaid = datastore.createQuery(Employee.class)
-                .filter("name =", null)
-                .asList();
-        System.out.println(underpaid);
+//        List<Employee> underpaid = datastore.createQuery(Employee.class)
+//                .field("salary").lessThanOrEq(30000)
+//                .asList();
+//        System.out.println(underpaid);
+//        System.out.println(datastore.createQuery(Employee.class).countAll());
+//        //第二种 我喜欢第二种
+//        underpaid = datastore.createQuery(Employee.class)
+//                .filter("name =", null)
+//                .asList();
+//        System.out.println(underpaid);
+       List<Employee> list =  datastore.createQuery(Employee.class).asList();
+        System.out.println(list);
     }
 
     /**
@@ -147,7 +151,20 @@ public class MongodbTest {
      */
     private void addDocument(Datastore datastore) {
         //添加document
-        final Employee user = new Employee("zhansan", 10000000.0);
+       BigDecimal b = new BigDecimal("100");
+        final Employee user = new Employee( );
+        user.setMoney(b);
+//        user.setA(100);
+//        Employee user = new Employee();
         datastore.save(user);
+    }
+    @Test
+    public void testFilter(){
+        Datastore datastore = morphia.createDatastore(new MongoClient("10.22.0.30", 27017), "a");
+        int wage = 30000;
+        Query query = datastore.createQuery(Employee.class).filter("wage =",wage);
+        System.out.println(query.asList());
+        System.out.println(1111111);
+
     }
 }

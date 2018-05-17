@@ -21,6 +21,10 @@
 <modules>
   <module>mongodbdemo</module>
     <module>httpclientdemo</module>
+  <module>rocketmqdemo</module>
+  <module>rabbitmqdemo</module>
+  <module>cagedemo</module>
+  <module>codeanddecode</module>
 </modules>
   <dependencies>
     <dependency>

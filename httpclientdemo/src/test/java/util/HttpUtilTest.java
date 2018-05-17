@@ -47,7 +47,6 @@ public class HttpUtilTest {
             CloseableHttpResponse closeableHttpResponse = httpClient.execute(httpGet);
            int status =  closeableHttpResponse.getStatusLine().getStatusCode();
            //获取主体
-            System.out.println(status);
             //获取返回的主体
             HttpEntity entity =closeableHttpResponse.getEntity();
             String string = EntityUtils.toString(entity,"utf-8");
@@ -68,8 +67,9 @@ public class HttpUtilTest {
         httpPost1.setEntity(urlEncodedFormEntity);
       CloseableHttpResponse closeableHttpResponse = (CloseableHttpResponse) httpClient.execute(httpPost1);
         System.out.println(closeableHttpResponse);
-     ProtocolVersion protocolVersion = closeableHttpResponse.getStatusLine().getProtocolVersion();
-        System.out.println(protocolVersion);
+     HttpEntity protocolVersion = closeableHttpResponse.getEntity();
+    String s = EntityUtils.toString(protocolVersion,"UTF-8");
+        System.out.println(s);
 
 
 
